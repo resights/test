@@ -2,12 +2,15 @@
   v-container
     v-row
       v-col(cols)
-        DataTable(:headers="headers" :items="users")
+        DataTable(
+          :headers="headers"
+          :items="items"
+        )
 </template>
 
 <script>
 import DataTable from '~/components/DataTable.vue'
-import users from '~/api/users.js'
+import sales from '~/api/sales.js'
 
 export default {
   components: {
@@ -15,24 +18,31 @@ export default {
   },
   data() {
     return {
-      users: null,
+      sales,
+      items: [],
       headers: [
-        { text: 'User', value: 'name', align: 'start' },
-        { text: 'Age', value: 'age' },
-        { text: 'Location', value: 'location' },
-        { text: 'Phone', value: 'phone' },
-        { text: 'Username', value: 'login' },
+        { text: 'Name', value: 'first_name', align: 'start' },
         { text: 'Email', value: 'email' },
+        { text: 'Gender', value: 'gender' },
+        { text: 'Year', value: 'car_model_year' },
+        { text: 'Sales', value: 'sales' },
+        { text: 'Country', value: 'country' },
       ],
     }
   },
   created() {
-    this.fetchData()
+    this.fetchData(0, 50).then((data) => {
+      console.log(data)
+      this.items = data
+    })
   },
   methods: {
-    fetchData() {
-      const data = users.results
-      this.users = data
+    async fetchData(page, size) {
+      setTimeout(await function () {
+        const start = page * size
+        const data = this.sales.results.slice(start, start + size)
+        return data
+      }.bind(this), 1000)
     }
   }
 }
