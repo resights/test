@@ -28,7 +28,7 @@ export default {
       sales,
       items: [],
       headers: [
-        { text: 'Name', value: 'first_name', align: 'start' },
+        { text: 'Name', value: 'user', align: 'start' },
         { text: 'Email', value: 'email' },
         { text: 'Gender', value: 'gender' },
         { text: 'Year', value: 'car_model_year' },
