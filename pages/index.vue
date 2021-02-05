@@ -31,7 +31,7 @@ export default {
         { text: 'Name', value: 'user', align: 'start' },
         { text: 'Email', value: 'email' },
         { text: 'Gender', value: 'gender' },
-        { text: 'Year', value: 'car_model_year' },
+        { text: 'Year', value: 'year' },
         { text: 'Sales', value: 'sales' },
         { text: 'Country', value: 'country' },
       ],
