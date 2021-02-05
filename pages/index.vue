@@ -3,9 +3,16 @@
     v-row
       v-col(cols)
         DataTable(
+          v-if="items.length"
           :headers="headers"
           :items="items"
         )
+        v-progress-circular(
+          v-else
+          width="2"
+          color="rs__primary"
+          indeterminate
+        ).mx-auto
 </template>
 
 <script>
@@ -30,20 +37,25 @@ export default {
       ],
     }
   },
-  created() {
-    this.fetchData(0, 50).then((data) => {
-      console.log(data)
-      this.items = data
-    })
+  async created() {
+    this.items = await this.fetchData(0, 50)
   },
   methods: {
     async fetchData(page, size) {
-      setTimeout(await function () {
-        const start = page * size
-        const data = this.sales.results.slice(start, start + size)
-        return data
-      }.bind(this), 1000)
+      const start = page * size
+      await this.delay(3000)
+      return await sales.results.slice(start, start + size)
+    },
+    delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.v-progress-circular
+  position: absolute
+  top: 50%
+  left: 50%
+</style>
