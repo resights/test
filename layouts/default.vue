@@ -5,15 +5,22 @@
     v-main
       nuxt
     v-footer(app)
-      span.mx-auto {{title}} &copy; {{ new Date().getFullYear() }}
+      span.mx-auto {{ getCopyright() }}
 </template>
 
 <script>
 export default {
-  data () {
+  name: "default",
+  data() {
     return {
-      title: 'Resights'
+      title: "Resights",
+      copyright: ""
+    };
+  },
+  methods: {
+    getCopyright() {
+      return `${this.title} \u00A9 ${new Date().getFullYear()}`;
     }
   }
-}
+};
 </script>
