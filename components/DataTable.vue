@@ -8,33 +8,38 @@ v-container
       solo-inverted="",
       hide-details="",
       prepend-inner-icon="mdi-magnify",
-      label="Search"
+      label="Search",
+      @input="onSearch"
     )
   v-data-table.elevation-1(
     :headers="headers",
     :items="items",
+    :server-items-length="length",
+    @update:options="updateOptions"
   )
-
-    template(v-slot:body.prepend='{ headers }')
+    template(v-slot:body.prepend="{ headers }")
       tr
         td
         td
         td
-          v-select(:items='filters.gender' :model='gender' label='Filter')
+          v-select(
+            :items="filters.gender",
+            :model="gender",
+            label="Filter",
+            @change="updateGender"
+          )
         td
         td
         td
 
-    template(v-slot:item.user='{ item }')
+    template(v-slot:item.user="{ item }")
       | {{ item.user.first_name }} {{ item.user.last_name }}
-
 </template>
 
 <script>
 export default {
-  props: ["headers", "items"],
+  props: ["headers", "items", "loading", "fetchData", "length"],
   data() {
-
     return {
       keys: [
         { text: "Name", value: "user", align: "start" },
@@ -45,14 +50,42 @@ export default {
         { text: "Country", value: "country" },
       ],
       filters: {
-        gender: ["all", "male", "female"],
+        gender: ["All", "Male", "Female", "Agender", "Genderqueer"],
       },
       search: "",
       gender: "all",
       pagination: {
         sortBy: "name",
       },
+      options: {
+        page: 1,
+        itemsPerPage: 10,
+        sortBy: [],
+        sortDesc: [],
+        search: "",
+        filters: {},
+      },
     };
+  },
+  methods: {
+    updateOptions: function (options) {
+      this.options = {...this.options, ...options};
+      this.fetchData(this.options);
+    },
+    onSearch: function (val) {
+      this.options.search = val;
+      this.fetchData(this.options);
+    },
+    updateGender: function (val) {
+      if (val === "All") {
+        this.options.filters = {};
+      } else {
+        this.options.filters = {
+          gender: val,
+        };
+      }
+      this.fetchData(this.options);
+    },
   },
 };
 </script>
