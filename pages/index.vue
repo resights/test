@@ -1,18 +1,12 @@
-<template lang="pug">
-  v-container
-    v-row
-      v-col(cols)
-        DataTable(
-          v-if="items.length"
-          :headers="headers"
-          :items="items"
-        )
-        v-progress-circular(
-          v-else
-          width="2"
-          color="rs__primary"
-          indeterminate
-        ).mx-auto
+<template>
+<v-container>
+    <v-row>
+        <v-col>
+            <DataTable v-if="items.length" :headers="headers" :items="items"></DataTable>
+            <v-progress-circular class="mx-auto" v-else width="2" color="rs__primary" indeterminate="indeterminate"></v-progress-circular>
+        </v-col>
+    </v-row>
+</v-container>
 </template>
 
 <script>
